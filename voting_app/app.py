@@ -5,7 +5,7 @@ import sys
 
 from flask import Flask, render_template
 
-from voting_app import commands, public, user, vote
+from voting_app import commands, vote
 from voting_app.extensions import (
     bcrypt,
     cache,

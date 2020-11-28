@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectMultipleField, SubmitField
+from wtforms import StringField, SelectMultipleField, SubmitField, widgets
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 from .models import Voter
@@ -69,6 +69,8 @@ class VoterForm(FlaskForm):
         val1 = val1.lower()
         val2 = val2.lower()
 
+        print(val1, val2)
+
         for v1, v2 in [[val1, val2], [val2, val1]]:
             if v1 == v2:
                 return True
@@ -76,7 +78,7 @@ class VoterForm(FlaskForm):
                 return True
             if (len(v2) > 2) and (ordered_letters(v1, v2)):
                 return True
-
+        print("fail")
         return False
 
     def __init__(self, *args, **kwargs):
@@ -95,11 +97,14 @@ class VoterForm(FlaskForm):
             self.otp.errors.append("Incorrect Passcode. Please try again.")
             return False
 
-        if validate_name(self.voter.first_name, self.first_name.data):
+        # print(self.voter.first_name.lower(), self.first_name.data.lower())
+        if not self.validate_name(self.voter.first_name, self.first_name.data):
             self.first_name.errors.append("Name does not match your Passcode. Please use the name in your GCF membership. Please try again.")
             return False
 
-        if self.last_name.lower() != self.last_name.data.lower():
+        # print(self.voter.last_name.lower(), self.last_name.data.lower())
+
+        if self.voter.last_name.lower() != self.last_name.data.lower():
             self.last_name.errors.append("Name does not match your Passcode. Please use the name in your GCF membership. Please try again.")
             return False
 
@@ -113,4 +118,11 @@ class VotationForm(FlaskForm):
     """Votation Form."""
     elders = MultiCheckboxField("Elders", choices=elders_list)
     deacons = MultiCheckboxField("Deacons", choices=deacons_list)
-    submit = SubmitField("Submit")
+    # submit = SubmitField("Submit")
+
+    def validate(self):
+        """Validate the form."""
+        initial_validation = super(VotationForm, self).validate()
+        if not initial_validation:
+            return False
+        return True

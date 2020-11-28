@@ -11,9 +11,9 @@
               {{ form.hidden_tag() }}
 
             <div class="field">
-              {{form.deacons.label(class="label")}}
+              {{form.deacons.label(class="checkbox")}}
 
-              {% for choice in form.deacons.choices %}
+              {% for choice in form.deacons %}
                 <div class="control">
                     {{ choice }}
                     {{ choice.label }}
@@ -22,9 +22,9 @@
             </div>
 
             <div class="field">
-              {{form.elders.label(class="label")}}
+              {{form.elders.label(class="chekcbox")}}
 
-              {% for choice in form.elders.choices %}
+              {% for choice in form.elders %}
                 <div class="control">
                     {{ choice }}
                     {{ choice.label }}
@@ -33,7 +33,8 @@
             </div>
 
             <div class="field">
-              <form.submit class="button is-success" type="submit">
+                <input class="button is-success" type="submit" value="Submit">
+              <!-- <form.submit class="button is-success" type="submit" value="Submit"> -->
             </div>
           </form>
         </div>

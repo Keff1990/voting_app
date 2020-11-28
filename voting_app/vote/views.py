@@ -68,7 +68,7 @@ def vote():
             return redirect(url_for("election.submit"))
         else:
             flash_errors(form)
-    return render_template("elections/vote.html")
+    return render_template("elections/vote.html", form=form)
 
 @blueprint.route("/submit/")
 @login_required

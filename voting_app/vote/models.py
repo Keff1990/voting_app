@@ -18,6 +18,7 @@ class Voter(UserMixin, PkModel):
     otp = Column(db.String(10), nullable=False)
 
     voted = Column(db.Boolean(), default=False)
+    vote = relationship('Vote', backref='voter')
 
     def __init__(self):
         pass
@@ -47,6 +48,7 @@ class Vote(PkModel):
     type = Column(db.String(30), nullable=False)
     name = Column(db.String(30), nullable=False)
     date = Column(db.DateTime(), nullable=False)
+
 
     def __init__(self, **kwargs):
         self.voter=voter
