@@ -1,4 +1,5 @@
 *.py[cod]
+__pycache__/
 
 # C extensions
 *.so
@@ -56,3 +57,7 @@ env/
 
 # Development database
 *.db
+
+db_*.csv
+
+migrations/

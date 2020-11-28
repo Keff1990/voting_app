@@ -1,0 +1,46 @@
+{% extends "layout.html"%}
+{% block title %}Login{% endblock %}
+
+{% block body_content %}
+<section class="hero is-primary is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          <form action="" class="box" method="POST">
+              {{ form.hidden_tag() }}
+
+            <div class="field">
+              {{form.deacons.label(class="checkbox")}}
+
+              {% for choice in form.deacons %}
+                <div class="control">
+                    {{ choice }}
+                    {{ choice.label }}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="field">
+              {{form.elders.label(class="chekcbox")}}
+
+              {% for choice in form.elders %}
+                <div class="control">
+                    {{ choice }}
+                    {{ choice.label }}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="field">
+                <input class="button is-success" type="submit" value="Submit">
+              <!-- <form.submit class="button is-success" type="submit" value="Submit"> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

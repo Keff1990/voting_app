@@ -1,71 +1,21 @@
 
 <!DOCTYPE html>
-<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en">
-  <!--<![endif]-->
+<html lang="en">
   <head>
     <meta charset="utf-8" />
 
-    <link rel="shortcut icon" href="{{static_url_for('static', filename='build/img/favicon.ico') }}">
-    <title>
-      {% block page_title %} 
-      Voting App
-       {% endblock %}
-    </title>
-    <meta
-      name="description"
-      content="{% block meta_description %}{% endblock %}"
-    />
-    <meta name="author" content="{% block meta_author %}{% endblock %}" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>GCF 2020 Votation of Leaders - {% block title %}{% endblock %}</title>
 
-    <!-- Mobile viewport optimized: h5bp.com/viewport -->
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ static_url_for('static', filename='build/main_css.bundle.css') }}"
-    />
-
-    {% block css %}{% endblock %}
+    <link rel="stylesheet" href="/static/css/bulma.min.css">
+    <link rel="stylesheet" href="/static/css/jquery-ui.min.css">
+    <script src="/static/js/all.min.js"></script>
   </head>
-  <body class="{% block body_class %}{% endblock %}">
-    {% block body %} {% with form=form %} {% include "nav.html" %} {% endwith %}
 
-    <header>{% block header %}{% endblock %}</header>
-
-    <main role="main">
-      {% with messages = get_flashed_messages(with_categories=true) %} {% if
-      messages %}
-      <div class="row">
-        <div class="col-md-12">
-          {% for category, message in messages %}
-          <div class="alert alert-{{ category }}">
-            <a class="close" title="Close" href="#" data-dismiss="alert"
-              >&times;</a
-            >
-            {{ message }}
-          </div>
-          <!-- end .alert -->
-          {% endfor %}
-        </div>
-        <!-- end col-md -->
-      </div>
-      <!-- end row -->
-      {% endif %} {% endwith %} {% block content %}{% endblock %}
-    </main>
-
-    {% include "footer.html" %}
-
-    <!-- JavaScript at the bottom for fast page loading -->
-    <script src="{{ static_url_for('static', filename='build/main_js.bundle.js') }}"></script>
-    {% block js %}{% endblock %}
-    <!-- end scripts -->
-    {% endblock %}
+  <body>
+      {% block body_content %}
+      {% endblock %}
   </body>
 </html>
-
