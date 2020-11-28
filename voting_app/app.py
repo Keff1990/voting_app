@@ -5,7 +5,7 @@ import sys
 
 from flask import Flask, render_template
 
-from voting_app import commands, public, user
+from voting_app import commands, public, user, vote
 from voting_app.extensions import (
     bcrypt,
     cache,
@@ -49,8 +49,7 @@ def register_extensions(app):
 
 def register_blueprints(app):
     """Register Flask blueprints."""
-    app.register_blueprint(public.views.blueprint)
-    app.register_blueprint(user.views.blueprint)
+    app.register_blueprint(vote.views.blueprint)
     return None
 
 

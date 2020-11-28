@@ -1,0 +1,43 @@
+{% extends "layout.html"%}
+{% block title %}Login{% endblock %}
+
+{% block body_content %}
+<section class="hero is-primary is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
+          <form action="" class="box">
+            <div class="field">
+              {{form.first_name.label(class="label")}}
+              <div class="control">
+                {{form.first_name(class="input", placeholder="")}}
+              </div>
+            </div>
+            <div class="field">
+              {{form.last_name.label(class="label")}}
+              <div class="control">
+                {{form.last_name(class="input", placeholder="")}}
+              </div>
+            </div>
+            <div class="field">
+              {{form.otp.label(class="label")}}
+              <div class="control has-icons-left">
+                {{form.otp(class="input", placeholder="******")}}
+                <span class="icon is-small is-left">
+                  <i class="fa fa-lock"></i>
+                </span>
+              </div>
+              <div class="is-size-7">A passcode has been sent to your SMS and Email last November 20. If you haven’t received it, please click <a href="" class="has-text-link"><u>here</u></a>.</div>
+            </div>
+
+            <div class="field">
+              <input class="button is-success" type="submit" value="Login">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

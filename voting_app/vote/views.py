@@ -1,0 +1,83 @@
+from flask import (
+    Blueprint,
+    current_app,
+    flash,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
+from flask_login import login_required, login_user, logout_user, current_user
+
+from voting_app.extensions import login_manager
+from voting_app.vote.forms import VoterForm, VotationForm
+from voting_app.vote.models import Voter, Vote
+from voting_app.utils import flash_errors
+
+from datetime import datetime
+
+blueprint = Blueprint("election", __name__, url_prefix="/elections", static_folder="../static")
+
+@login_manager.user_loader
+def load_user(voter_id):
+    """Load user by ID."""
+    return Voter.get_by_id(int(voter_id))
+
+@blueprint.route("/", methods=["GET", "POST"])
+def login():
+    """Login Page."""
+    form = VoterForm(request.form)
+    current_app.logger.info("Hello from the home page!")
+    # Handle logging in
+    if request.method == "POST":
+        if form.validate_on_submit():
+            login_user(form.voter)
+            flash("You are logged in.", "success")
+            redirect_url = request.args.get("next") or url_for("election.vote")
+            return redirect(redirect_url)
+        else:
+            flash_errors(form)
+    return render_template("elections/login.html", form=form)
+
+@blueprint.route("/vote/", methods=["GET", "POST"])
+@login_required
+def vote():
+    now = datetime.now()
+    """Present vote page."""
+    form = VotationForm(request.form)
+    if form.validate_on_submit():
+        if form.deacons.data:
+            for deacon in form.deacons.data:
+                Vote.create(
+                    voter = current_user.id,
+                    type = "deacon",
+                    name = deacon, #check how to access id of deacon
+                    date = now
+                )
+        if form.elders.data:
+            for elder in form.elders.data:
+                Vote.create(
+                    voter = current_user.id,
+                    type = "elder",
+                    name = elder, #check how to access id of elder
+                    date = now
+                )
+        if (form.deacons.data) or (form.elders.data):
+            Voter.update(voted = True)
+            flash("Thank you for voting.", "success")
+            return redirect(url_for("election.submit"))
+        else:
+            flash_errors(form)
+    return render_template("elections/vote.html")
+
+@blueprint.route("/submit/")
+@login_required
+def submit():
+    """Logout."""
+    logout_user()
+    # flash("You are logged out.", "info")
+    return redirect(url_for("election.submitted"))
+
+@blueprint.route("/submitted/")
+def submitted():
+    return render_template("elections/submitted.html")
