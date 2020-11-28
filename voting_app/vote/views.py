@@ -45,25 +45,28 @@ def vote():
     now = datetime.now()
     """Present vote page."""
     form = VotationForm(request.form)
+    print(current_user.id)
     if form.validate_on_submit():
         if form.deacons.data:
             for deacon in form.deacons.data:
+                print(current_user.id, deacon, now)
                 Vote.create(
-                    voter = current_user.id,
+                    voter_id = current_user.id,
                     type = "deacon",
                     name = deacon, #check how to access id of deacon
                     date = now
                 )
         if form.elders.data:
             for elder in form.elders.data:
+                print(current_user.id, elder, now)
                 Vote.create(
-                    voter = current_user.id,
+                    voter_id = current_user.id,
                     type = "elder",
                     name = elder, #check how to access id of elder
                     date = now
                 )
         if (form.deacons.data) or (form.elders.data):
-            Voter.update(voted = True)
+            current_user.update(voted = True)
             flash("Thank you for voting.", "success")
             return redirect(url_for("election.submit"))
         else:

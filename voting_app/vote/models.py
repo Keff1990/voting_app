@@ -18,7 +18,6 @@ class Voter(UserMixin, PkModel):
     otp = Column(db.String(10), nullable=False)
 
     voted = Column(db.Boolean(), default=False)
-    vote = relationship('Vote', backref='voter')
 
     def __init__(self):
         pass
@@ -38,20 +37,24 @@ class Voter(UserMixin, PkModel):
 
     def __repr__(self):
         """Represent instance as a unique string."""
-        return f"{self.first_name} voted: {self.voted}"
+        return f"{self.first_name} {self.last_name} voted: {self.voted}"
 
 class Vote(PkModel):
     """A vote of the voter."""
 
     __tablename__ = "votes"
-    voter = reference_col("voters", nullable=True)
+    voter_id = reference_col("voters", nullable=False)
+    voter = relationship("Voter", backref="votes")
     type = Column(db.String(30), nullable=False)
     name = Column(db.String(30), nullable=False)
     date = Column(db.DateTime(), nullable=False)
+    #
+    # def __init__(self, **kwargs):
+    #     self.voter_id=voter_id
+    #     self.type=type
+    #     self.name=name
+    #     self.date=date
 
-
-    def __init__(self, **kwargs):
-        self.voter=voter
-        self.type=type
-        self.name=name
-        self.date=date
+    def __repr__(self):
+        """Represent instance as a unique string."""
+        return f"{self.voter_id} {self.type} {self.name}"
