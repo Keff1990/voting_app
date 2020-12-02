@@ -28,6 +28,6 @@ A simple voting app made for GCF.
 `flask run`
 
 ## Downloading the data
-1. At the root folder, run
-`python -c 'from download_data import download_data; download_data("FILEPATH OF DATABASE")'`
+1. At the root folder, run  
+`python -c 'from download_data import download_data; download_data("FILEPATH OF DATABASE")'`  
 ex. `python -c 'from download_data import download_data; download_data("voting_app/dev.db")'`
