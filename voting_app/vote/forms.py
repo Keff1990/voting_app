@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectMultipleField, SubmitField, widgets
 from wtforms.validators import DataRequired, Email, EqualTo, Length
+from datetime import datetime
 
 from .models import Voter
 
@@ -90,6 +91,15 @@ class VoterForm(FlaskForm):
         """Validate the form."""
         initial_validation = super(VoterForm, self).validate()
         if not initial_validation:
+            return False
+
+        now = datetime.now()
+        if now < datetime(2020, 12, 6):
+            self.otp.errors.append("Voting is still closed. Voting will open on December 6, and close at December 13, 3:00 PM.")
+            return False
+
+        if now > datetime(2020, 12, 13, 15, 00):
+            self.otp.errors.append("Voting has closed. Voting closed at December 13, 3:00 PM.")
             return False
 
         self.voter = Voter.query.filter_by(otp=self.otp.data).first()
