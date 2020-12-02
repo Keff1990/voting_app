@@ -15,7 +15,7 @@ A simple voting app made for GCF.
 `flask db upgrade`  
 
 ## Adding Users:
-1. To add users, place the provided csv in ./voting_app/static/csv
+1. To add users, place the provided csv in ./voting_app
 1. Enter the inner voting_app folder  
 `cd voting_app`
 1. Run the following code:  
@@ -27,3 +27,7 @@ A simple voting app made for GCF.
 1. If none, at the root folder, run  
 `flask run`
 
+## Downloading the data
+1. At the root folder, run
+`python -c 'from download_data import download_data; download_data("FILEPATH OF DATABASE")'`
+ex. `python -c 'from download_data import download_data; download_data("voting_app/dev.db")'`
