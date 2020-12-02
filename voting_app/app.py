@@ -16,6 +16,7 @@ from voting_app.extensions import (
     login_manager,
     migrate,
 )
+from voting_app.start_database import create_test_user, load_users
 
 
 def create_app(config_object="voting_app.settings"):
@@ -72,7 +73,7 @@ def register_shellcontext(app):
 
     def shell_context():
         """Shell context objects."""
-        return {"db": db, "Voter": vote.models.Voter, "Vote":vote.models.Vote}
+        return {"db": db, "Voter": vote.models.Voter, "Vote":vote.models.Vote, "create_test_user": create_test_user}
 
     app.shell_context_processor(shell_context)
 
