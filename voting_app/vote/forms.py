@@ -40,13 +40,13 @@ class VoterForm(FlaskForm):
     """Voter form."""
 
     first_name = StringField(
-        "First Name", validators=[DataRequired(), Length(min=2, max=30)]
+        "First Name", validators=[DataRequired()]
     )
     last_name = StringField(
-        "Last Name", validators=[DataRequired(), Length(min=2, max=30)]
+        "Last Name", validators=[DataRequired()]
     )
     otp = StringField(
-        "Passcode", validators=[DataRequired(), Length(min=5, max=10)]
+        "Passcode", validators=[DataRequired()]
     )
 
     def validate_name(self, val1, val2):
@@ -125,4 +125,13 @@ class VotationForm(FlaskForm):
         initial_validation = super(VotationForm, self).validate()
         if not initial_validation:
             return False
+
+        if len(self.deacons.data) > 8:
+            self.deacons.errors.append("You may only vote for up to 8 deacons.")
+            return False
+
+        if len(self.elders.data) > 7:
+            self.elders.errors.append("You may only vote for up to 7 elders.")
+            return False
+
         return True

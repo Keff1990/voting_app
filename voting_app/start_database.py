@@ -3,11 +3,12 @@ import csv
 from environs import Env
 import pandas as pd
 
-def create_test_user():
-    env = Env()
-    env.read_env()
+def create_test_user(db_url=None, first_name="FTest", last_name="LTest", otp="PASS1234", email=None, mobile=None, voted=False):
+    if not db_url:
+        env = Env()
+        env.read_env()
+        db_url = env.str("DATABASE_URL")
 
-    db_url = env.str("DATABASE_URL")
     engine = sqla.create_engine(db_url, echo=True)
 
     metadata = sqla.MetaData(bind=engine)
@@ -16,23 +17,24 @@ def create_test_user():
 
     voters = metadata.tables['voters']
 
-    test_voter = voters.insert().values(first_name="FTest", last_name="LTest",
-            otp="PASS1234", email="jefferson1990@yahoo.com",
-            mobile="+639178589218", voted=False)
+    test_voter = voters.insert().values(first_name=first_name, last_name=last_name,
+            otp=otp, email=email,
+            mobile=mobile, voted=voted)
 
     with engine.connect() as conn:
         result = conn.execute(test_voter)
     print("Done.")
 
-def load_users(file_path="./static/csv/db_users.csv"):
+def load_users(file_path="./static/csv/db_users.csv", db_url=None):
     print("Started...")
-    env = Env()
-    env.read_env()
 
     df_csv = pd.read_csv(file_path)
     df_csv['voted'] = False
 
-    db_url = env.str("DATABASE_URL")
+    if not db_url:
+        env = Env()
+        env.read_env()
+        db_url = env.str("DATABASE_URL")
     engine = sqla.create_engine(db_url, echo=True)
 
     with engine.connect() as conn:

@@ -6,12 +6,25 @@
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
-        <div class="column is-5-tablet is-4-desktop is-3-widescreen">
-          <form action="" class="box" method="POST">
+        <div class="column is-5-tablet is-5-desktop is-5-widescreen box">
+            <div class="container has-text-black pt-2 pb-4">
+                <h1 class="title has-text-black">Voting Instructions</h1>
+
+                <h2 class="subtitle has-text-grey is-size-6">You may vote up to eight (8) number of deacons and seven (7) number of elders by selecting their names below.
+                    Once you select a nominee, you should see a checkmark in the box beside their name. Select all your nominees before pressing the submit button.
+                    Once you submit your vote, you may <b>no longer change</b> your vote.
+                </h2>
+            </div>
+
+          <form action="" method="POST">
               {{ form.hidden_tag() }}
 
-            <div class="field">
-              {{form.deacons.label(class="checkbox")}}
+            <div class="field pl-4">
+              {{form.deacons.label(class="checkbox is-size-5")}}
+
+              {% for error in form.deacons.errors %}
+                <div class="help is-danger">{{ error }}</div>
+            {% endfor %}
 
               {% for choice in form.deacons %}
                 <div class="control">
@@ -21,8 +34,12 @@
                 {% endfor %}
             </div>
 
-            <div class="field">
-              {{form.elders.label(class="chekcbox")}}
+            <div class="field pl-4">
+              {{form.elders.label(class="checkbox is-size-5")}}
+
+              {% for error in form.elders.errors %}
+                <div class="help is-danger">{{ error }}</div>
+            {% endfor %}
 
               {% for choice in form.elders %}
                 <div class="control">
@@ -32,8 +49,8 @@
                 {% endfor %}
             </div>
 
-            <div class="field">
-                <input class="button is-success" type="submit" value="Submit">
+            <div class="field pt-2">
+                <input class="button is-success is-fullwidth mb-2" type="submit" value="Submit">
               <!-- <form.submit class="button is-success" type="submit" value="Submit"> -->
             </div>
           </form>
