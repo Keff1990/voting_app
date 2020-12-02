@@ -31,7 +31,7 @@
             <div class="field">
               {{form.otp.label(class="label")}}
               <div class="control has-icons-left">
-                {{form.otp(class="input", placeholder="******")}}
+                {{form.otp(class="input", placeholder="*******")}}
                 <span class="icon is-small is-left">
                   <i class="fa fa-lock"></i>
                 </span>
@@ -39,7 +39,7 @@
               {% for error in form.otp.errors %}
                 <div class="help is-danger">{{ error }}</div>
                 {% endfor %}
-              <div class="is-size-7">A passcode has been sent to your SMS and Email last December 6. If you haven’t received it, please contact email@gcf.org.ph.</div>
+              <div class="is-size-7">A passcode has been sent to your Email last December 3. If you haven’t received it, please contact election@gcf.org.ph with a scanned photo of a valid ID.</div>
             </div>
 
             <div class="field">

@@ -25,7 +25,7 @@ def create_test_user(db_url=None, first_name="FTest", last_name="LTest", otp="PA
         result = conn.execute(test_voter)
     print("Done.")
 
-def load_users(file_path="./static/csv/db_users.csv", db_url=None):
+def load_users(file_path="./db_users.csv", db_url=None):
     print("Started...")
 
     df_csv = pd.read_csv(file_path)

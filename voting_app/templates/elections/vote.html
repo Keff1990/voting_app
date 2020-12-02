@@ -16,7 +16,7 @@
                 </h2>
             </div>
 
-          <form action="" method="POST">
+          <form action="" method="POST" onSubmit="return confirm('Confirmation: Submit your vote? You can not change your vote after submission.');">
               {{ form.hidden_tag() }}
 
             <div class="field pl-4">
