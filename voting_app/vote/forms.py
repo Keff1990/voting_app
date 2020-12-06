@@ -108,13 +108,13 @@ class VoterForm(FlaskForm):
             return False
 
         # print(self.voter.first_name.lower(), self.first_name.data.lower())
-        if not self.validate_name(self.voter.first_name, self.first_name.data):
+        if not self.validate_name(self.voter.first_name.replace("ñ","n"), self.first_name.data.replace("ñ","n")):
             self.first_name.errors.append("Name does not match your Passcode. Please use the name in your GCF membership. Please try again.")
             return False
 
         # print(self.voter.last_name.lower(), self.last_name.data.lower())
 
-        if self.voter.last_name.lower() != self.last_name.data.lower():
+        if self.voter.last_name.lower().replace("ñ","n") != self.last_name.data.lower().replace("ñ","n"):
             self.last_name.errors.append("Name does not match your Passcode. Please use the name in your GCF membership. Please try again.")
             return False
 

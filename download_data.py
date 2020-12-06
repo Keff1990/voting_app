@@ -16,7 +16,7 @@ def download_data(db_url):
     Vote = metadata.tables['votes']
     Voter = metadata.tables['voters']
 
-    s = select([Vote.c.type, Vote.c.name, func.count(Vote.c.id)])
+    s = select([Vote.c.type, Vote.c.name, func.count(Vote.c.name)]).group_by(Vote.c.name)
     with engine.connect() as conn:
         result = conn.execute(s)
 
