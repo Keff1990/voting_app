@@ -94,12 +94,12 @@ class VoterForm(FlaskForm):
             return False
 
         now = datetime.now()
-        if now < datetime(2020, 12, 6):
-            self.otp.errors.append("Voting is still closed. Voting will open on December 6, and close at December 13, 3:00 PM.")
+        if now < datetime(2021, 1, 17):
+            self.otp.errors.append("Voting is still closed. Voting will open on January 17, and close at January 31, 5:00 PM.")
             return False
 
-        if now > datetime(2020, 12, 13, 15, 00):
-            self.otp.errors.append("Voting has closed. Voting closed at December 13, 3:00 PM.")
+        if now > datetime(2021, 1, 31, 17, 00):
+            self.otp.errors.append("Voting has closed. Voting closed at January 31, 5:00 PM.")
             return False
 
         self.voter = Voter.query.filter_by(otp=self.otp.data).first()
