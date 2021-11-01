@@ -13,7 +13,7 @@ from flask import (
 from flask_login import current_user, login_required, login_user, logout_user
 from voting_app.extensions import login_manager
 from voting_app.utils import flash_errors
-from voting_app.vote.forms import VotationForm, VoterForm
+from voting_app.vote.forms import VotationForm, VoterForm, deacons_images, elders_images
 from voting_app.vote.models import Vote, Voter
 
 blueprint = Blueprint(
@@ -48,8 +48,10 @@ def login():
 @login_required
 def vote():
     now = datetime.now()
+
     """Present vote page."""
     form = VotationForm(request.form)
+
     print(current_user.id)
     if form.validate_on_submit():
         if form.deacons.data:
@@ -81,7 +83,12 @@ def vote():
             return redirect(url_for("election.submit"))
         else:
             flash_errors(form)
-    return render_template("elections/vote.html", form=form)
+    return render_template(
+        "elections/vote.html",
+        form=form,
+        deacons_images=deacons_images,
+        elders_images=elders_images,
+    )
 
 
 @blueprint.route("/submit/")

@@ -20,6 +20,9 @@ elders_list = [
     ("rommel", "Rommel Yazon"),
 ]
 
+deacons_images = [f"{x[0]}.png" for x in deacons_list]
+elders_images = [f"{x[0]}.png" for x in elders_list]
+
 
 class MultiCheckboxField(SelectMultipleField):
     """

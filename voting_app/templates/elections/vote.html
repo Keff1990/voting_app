@@ -20,34 +20,48 @@
               {{ form.hidden_tag() }}
 
             <div class="field pl-4">
+                {{form.elders.label(class="checkbox is-size-5")}}
+
+                {% for error in form.elders.errors %}
+                  <div class="help is-danger">{{ error }}</div>
+                {% endfor %}
+
+                {% for choice in form.elders %}
+                    <div class="control media">
+                      <div class="media-left image is-48x48">
+                          <img src="/static/img/{{ elders_images[loop.index0] }}">
+                      </div>
+                      <div class="media-content">
+                          {{ choice }}
+                          {{ choice.label }}
+                      </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div class="field pl-4">
               {{form.deacons.label(class="checkbox is-size-5")}}
 
               {% for error in form.deacons.errors %}
                 <div class="help is-danger">{{ error }}</div>
-            {% endfor %}
+              {% endfor %}
 
               {% for choice in form.deacons %}
-                <div class="control">
-                    {{ choice }}
-                    {{ choice.label }}
+                <div class="control media">
+                    <div class="media-left image is-48x48">
+                        <img src="/static/img/{{ deacons_images[loop.index0] }}">
+                    </div>
+                    <div class="media-content">
+                        {{ choice }}
+                        {{ choice.label }}
+                    </div>
                 </div>
-                {% endfor %}
+              {% endfor %}
             </div>
 
-            <div class="field pl-4">
-              {{form.elders.label(class="checkbox is-size-5")}}
 
-              {% for error in form.elders.errors %}
-                <div class="help is-danger">{{ error }}</div>
-            {% endfor %}
-
-              {% for choice in form.elders %}
-                <div class="control">
-                    {{ choice }}
-                    {{ choice.label }}
-                </div>
-                {% endfor %}
-            </div>
 
             <div class="field pt-2">
                 <input class="button is-success is-fullwidth mb-2" type="submit" value="Submit">
