@@ -17,7 +17,7 @@ from voting_app.extensions import (
     migrate,
 )
 from voting_app.start_database import create_test_user, load_users
-from voting_app.read_database import get_data, pd
+from voting_app.read_database import get_data, pd, get_otp
 
 
 def create_app(config_object="voting_app.settings"):
@@ -74,7 +74,12 @@ def register_shellcontext(app):
 
     def shell_context():
         """Shell context objects."""
-        return {"db": db, "Voter": vote.models.Voter, "Vote":vote.models.Vote, "create_test_user": create_test_user, "get_data": get_data}
+        return {"db": db,
+                "Voter": vote.models.Voter,
+                "Vote":vote.models.Vote,
+                "create_test_user": create_test_user,
+                "get_data": get_data,
+                "get_otp": get_otp}
 
     app.shell_context_processor(shell_context)
 
