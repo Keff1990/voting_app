@@ -1,31 +1,33 @@
-from flask_wtf import FlaskForm
-from wtforms import StringField, SelectMultipleField, SubmitField, widgets
-from wtforms.validators import DataRequired, Email, EqualTo, Length
 from datetime import datetime
+
+from flask_wtf import FlaskForm
+from wtforms import SelectMultipleField, StringField, SubmitField, widgets
+from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 from .models import Voter
 
 deacons_list = [
-    ('eliza', 'Eliza Shih-Chiusinco'),
-    ('najee', 'Najee Chua'),
-    ('levi', 'Levi Fabellar'),
-    ('sam', 'Sam Hernando'),
-    ('noel', 'Noel Mojica'),
-    ('arnel', 'Arnel Nunez'),
-    ('jeff', 'Jeff Tan'),
-    ('rj', 'RJ Yu'),
+    ("eliza", "Eliza Shih-Chiusinco"),
+    ("najee", "Najee Chua"),
+    ("levi", "Levi Fabellar"),
+    ("sam", "Sam Hernando"),
+    ("noel", "Noel Mojica"),
+    ("arnel", "Arnel Nunez"),
+    ("jeff", "Jeff Tan"),
+    ("rj", "RJ Yu"),
 ]
 elders_list = [
-    ('june', 'June Acebedo'),
-    ('jon', 'Jon Biscocho'),
-    ('ed', 'Ed Dames'),
-    ('bong', 'Bong Durana'),
-    ('dan', 'Dan Guina'),
-    ('aris', 'Aris Lumague'),
-    ('arnold', 'Arnold Perona'),
-    ('marlon', 'Marlon Roldan'),
-    ('eugene', 'Eugene Villanueva'),
+    ("june", "June Acebedo"),
+    ("jon", "Jon Biscocho"),
+    ("ed", "Ed Dames"),
+    ("bong", "Bong Durana"),
+    ("dan", "Dan Guina"),
+    ("aris", "Aris Lumague"),
+    ("arnold", "Arnold Perona"),
+    ("marlon", "Marlon Roldan"),
+    ("eugene", "Eugene Villanueva"),
 ]
+
 
 class MultiCheckboxField(SelectMultipleField):
     """
@@ -34,29 +36,25 @@ class MultiCheckboxField(SelectMultipleField):
     Iterating the field will produce subfields, allowing custom rendering of
     the enclosed checkbox fields.
     """
+
     widget = widgets.ListWidget(prefix_label=False)
     option_widget = widgets.CheckboxInput()
+
 
 class VoterForm(FlaskForm):
     """Voter form."""
 
-    first_name = StringField(
-        "First Name", validators=[DataRequired()]
-    )
-    last_name = StringField(
-        "Last Name", validators=[DataRequired()]
-    )
-    otp = StringField(
-        "Passcode", validators=[DataRequired()]
-    )
+    first_name = StringField("First Name", validators=[DataRequired()])
+    last_name = StringField("Last Name", validators=[DataRequired()])
+    otp = StringField("Passcode", validators=[DataRequired()])
 
     def validate_name(self, val1, val2):
-        '''validates if the name might be valid'''
+        """validates if the name might be valid"""
 
         def ordered_letters(val1, val2):
-            '''validates if val2 letters in val1 by order'''
+            """validates if val2 letters in val1 by order"""
             tv1 = val1
-            this_name = ''
+            this_name = ""
             this_i = 0
             for c2 in val2:
                 this_list = []
@@ -64,7 +62,8 @@ class VoterForm(FlaskForm):
                 if this_list:
                     this_i = this_list[0][0]
                     this_name += c2
-            if val2 == this_name: return True
+            if val2 == this_name:
+                return True
             return False
 
         val1 = val1.lower()
@@ -108,24 +107,37 @@ class VoterForm(FlaskForm):
             return False
 
         # print(self.voter.first_name.lower(), self.first_name.data.lower())
-        if not self.validate_name(self.voter.first_name.replace("ñ","n"), self.first_name.data.replace("ñ","n")):
-            self.first_name.errors.append("Name does not match your Passcode. Please use the name in your GCF membership. Please try again.")
+        if not self.validate_name(
+            self.voter.first_name.replace("ñ", "n"),
+            self.first_name.data.replace("ñ", "n"),
+        ):
+            self.first_name.errors.append(
+                "Name does not match your Passcode. Please use the name in your GCF membership. Please try again."
+            )
             return False
 
         # print(self.voter.last_name.lower(), self.last_name.data.lower())
 
-        if self.voter.last_name.lower().replace("ñ","n") != self.last_name.data.lower().replace("ñ","n"):
-            self.last_name.errors.append("Name does not match your Passcode. Please use the name in your GCF membership. Please try again.")
+        if self.voter.last_name.lower().replace(
+            "ñ", "n"
+        ) != self.last_name.data.lower().replace("ñ", "n"):
+            self.last_name.errors.append(
+                "Name does not match your Passcode. Please use the name in your GCF membership. Please try again."
+            )
             return False
 
         if self.voter.voted:
-            self.otp.errors.append("Member has already voted. For questions, please contact GCF.")
+            self.otp.errors.append(
+                "Member has already voted. For questions, please contact GCF."
+            )
             return False
 
         return True
 
+
 class VotationForm(FlaskForm):
     """Votation Form."""
+
     elders = MultiCheckboxField("Elders", choices=elders_list)
     deacons = MultiCheckboxField("Deacons", choices=deacons_list)
     # submit = SubmitField("Submit")

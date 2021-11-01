@@ -6,6 +6,7 @@ from flask_login import UserMixin
 from voting_app.database import Column, PkModel, db, reference_col, relationship
 from voting_app.extensions import bcrypt
 
+
 class Voter(UserMixin, PkModel):
     """A voter."""
 
@@ -38,6 +39,7 @@ class Voter(UserMixin, PkModel):
     def __repr__(self):
         """Represent instance as a unique string."""
         return f"{self.first_name} {self.last_name} voted: {self.voted}"
+
 
 class Vote(PkModel):
     """A vote of the voter."""
