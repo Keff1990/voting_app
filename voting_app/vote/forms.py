@@ -7,25 +7,17 @@ from wtforms.validators import DataRequired, Email, EqualTo, Length
 from .models import Voter
 
 deacons_list = [
-    ("eliza", "Eliza Shih-Chiusinco"),
-    ("najee", "Najee Chua"),
-    ("levi", "Levi Fabellar"),
-    ("sam", "Sam Hernando"),
-    ("noel", "Noel Mojica"),
-    ("arnel", "Arnel Nunez"),
-    ("jeff", "Jeff Tan"),
-    ("rj", "RJ Yu"),
+    ("philip", "Philip Blanco"),
+    ("theo", "Theo Espinosa"),
+    ("jourd", "Jourd Lee"),
+    ("caleb", "Caleb Ramirez"),
+    ("lark", "Lark Silva"),
+    ("regie", "Regie Salas"),
 ]
 elders_list = [
-    ("june", "June Acebedo"),
-    ("jon", "Jon Biscocho"),
-    ("ed", "Ed Dames"),
-    ("bong", "Bong Durana"),
-    ("dan", "Dan Guina"),
-    ("aris", "Aris Lumague"),
-    ("arnold", "Arnold Perona"),
-    ("marlon", "Marlon Roldan"),
-    ("eugene", "Eugene Villanueva"),
+    ("sherwin", "Sherwin Chua"),
+    ("ave", "Ave Gaspar"),
+    ("rommel", "Rommel Yazon"),
 ]
 
 
