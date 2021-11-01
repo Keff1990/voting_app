@@ -13,7 +13,13 @@ from flask import (
 from flask_login import current_user, login_required, login_user, logout_user
 from voting_app.extensions import login_manager
 from voting_app.utils import flash_errors
-from voting_app.vote.forms import VotationForm, VoterForm, deacons_images, elders_images
+from voting_app.vote.forms import (
+    VotationForm,
+    VoterForm,
+    RequestOTPForm,
+    deacons_images,
+    elders_images,
+)
 from voting_app.vote.models import Vote, Voter
 
 blueprint = Blueprint(
@@ -30,18 +36,36 @@ def load_user(voter_id):
 @blueprint.route("/", methods=["GET", "POST"])
 def login():
     """Login Page."""
-    form = VoterForm(request.form)
+    form_login = VoterForm(request.form)
+    form_request = RequestOTPForm(request.form)
+    request_success = False
     current_app.logger.info("Hello from the home page!")
     # Handle logging in
     if request.method == "POST":
-        if form.validate_on_submit():
-            login_user(form.voter)
-            flash("You are logged in.", "success")
-            redirect_url = request.args.get("next") or url_for("election.vote")
-            return redirect(redirect_url)
-        else:
-            flash_errors(form)
-    return render_template("elections/login.html", form=form)
+        if form_login.submitlogin.data:
+            if form_login.validate():
+                # print(form_login.voter)
+                login_user(form_login.voter)
+                flash("You are logged in.", "success")
+                redirect_url = request.args.get("next") or url_for("election.vote")
+                return redirect(redirect_url)
+            else:
+                flash_errors(form_login)
+
+        if form_request.submitrequest.data:
+            if form_request.validate():
+                # INPUT API REQUEST FOR SMS MESSAGE HERE
+                flash("Your Passcode has been sent to your mobile device.", "message")
+                request_success = True
+            else:
+                flash_errors(form_request)
+
+    return render_template(
+        "elections/login.html",
+        form_login=form_login,
+        form_request=form_request,
+        request_success=request_success,
+    )
 
 
 @blueprint.route("/vote/", methods=["GET", "POST"])
@@ -72,10 +96,6 @@ def vote():
                     name=elder,  # check how to access id of elder
                     date=now,
                 )
-
-        current_user.update(voted=True)
-        flash("Thank you for voting.", "success")
-        return redirect(url_for("election.submit"))
 
         if (form.deacons.data) or (form.elders.data):
             current_user.update(voted=True)

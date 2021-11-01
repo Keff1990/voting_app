@@ -6,46 +6,101 @@
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
-        <div class="column is-5-tablet is-4-desktop is-4-widescreen">
-          <form action="" class="box" method="POST">
-            {{ form.hidden_tag() }}
+        <div class="box column is-5">
+            <h1 class="title has-text-black"> Have your Passcode? </h1>
+            <h2 class="subtitle has-text-black"> Fill up the information below to log-in! </h2>
+          <form action="" class="" method="POST">
+            {{ form_login.hidden_tag() }}
             <div class="field">
-              {{form.first_name.label(class="label")}}
+              {{form_login.first_name.label(class="label")}}
               <div class="control">
-                {{form.first_name(class="input", placeholder="")}}
+                {{form_login.first_name(class="input", placeholder="")}}
               </div>
-              {% for error in form.first_name.errors %}
+              {% for error in form_login.first_name.errors %}
                 <div class="help is-danger">{{ error }}</div>
                 {% endfor %}
 
             </div>
             <div class="field">
-              {{form.last_name.label(class="label")}}
+              {{form_login.last_name.label(class="label")}}
               <div class="control">
-                {{form.last_name(class="input", placeholder="")}}
+                {{form_login.last_name(class="input", placeholder="")}}
               </div>
-              {% for error in form.last_name.errors %}
+              {% for error in form_login.last_name.errors %}
                 <div class="help is-danger">{{ error }}</div>
                 {% endfor %}
             </div>
             <div class="field">
-              {{form.otp.label(class="label")}}
+              {{form_login.otp.label(class="label")}}
               <div class="control has-icons-left">
-                {{form.otp(class="input", placeholder="*******")}}
+                {{form_login.otp(class="input", placeholder="*******")}}
                 <span class="icon is-small is-left">
                   <i class="fa fa-lock"></i>
                 </span>
               </div>
-              {% for error in form.otp.errors %}
+              {% for error in form_login.otp.errors %}
                 <div class="help is-danger">{{ error }}</div>
                 {% endfor %}
-              <div class="is-size-7">A passcode has been sent to your Emails from election@gcf.org.ph. If you haven’t received it, please contact election@gcf.org.ph with a scanned photo of a valid ID.</div>
+              <div class="is-size-7">Check your email inbox to see if you received a passcode from us! If not, request for a passcode to the right.</div>
             </div>
 
             <div class="field">
-              <input class="button is-success" type="submit" value="Login">
+                {{ form_login.submitlogin(class_="button is-success") }}
+              <!-- <input class="button is-success" type="submit" value="Login"> -->
             </div>
           </form>
+        </div>
+
+        <div class="column is-1">
+        </div>
+
+        <div class="box column is-5 has-background-info">
+                <h1 class="title"> No Passcode? </h1>
+                <h2 class="subtitle"> No worries! You can request for a passcode here: </h2>
+
+                <form action="" class="" method="POST">
+                  {{ form_request.hidden_tag() }}
+                  <div class="field">
+                    {{form_request.first_name.label(class="label")}}
+                    <div class="control">
+                      {{form_request.first_name(class="input", placeholder="")}}
+                    </div>
+                    {% for error in form_request.first_name.errors %}
+                      <div class="help is-danger">{{ error }}</div>
+                      {% endfor %}
+
+                  </div>
+                  <div class="field">
+                    {{form_request.last_name.label(class="label")}}
+                    <div class="control">
+                      {{form_request.last_name(class="input", placeholder="")}}
+                    </div>
+                    {% for error in form_request.last_name.errors %}
+                      <div class="help is-danger">{{ error }}</div>
+                      {% endfor %}
+                  </div>
+                  <div class="field">
+                    {{form_request.mobile.label(class="label")}}
+                    <div class="control has-icons-left">
+                      {{form_request.mobile(class="input", placeholder="09#########")}}
+                      <span class="icon is-small is-left">
+                        <i class="fa fa-lock"></i>
+                      </span>
+                    </div>
+                    {% for error in form_request.mobile.errors %}
+                      <div class="help is-danger">{{ error }}</div>
+                      {% endfor %}
+                    <div class="is-size-7">Having a hard time requesting for a passcode? Email election@gcf.org.ph to verify your membership and receive one!</div>
+                  </div>
+
+                  <div class="field">
+                      {{ form_request.submitrequest(class_="button") }}
+                      {% if request_success %}
+                        <div class="help has-text-success-light">Your request has been received. Your passcode will be sent via SMS shortly.</div>
+                      {% endif %}
+                    <!-- <input class="button" type="submit" value="Request Passcode"> -->
+                  </div>
+                </form>
         </div>
       </div>
     </div>
