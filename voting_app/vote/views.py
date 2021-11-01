@@ -55,6 +55,11 @@ def login():
         if form_request.submitrequest.data:
             if form_request.validate():
                 # INPUT API REQUEST FOR SMS MESSAGE HERE
+                # use the ff:
+                # form_request.member.mobile --> recipient's mobile number
+                # form_request.member.otp --> recipient's passcode/otp
+                # you can use the following message:
+                # f"GCF Voting Passcode: {form_request.member.otp}. Use this to login at election.gcf.org.ph. Do not share this with anyone."
                 flash("Your Passcode has been sent to your mobile device.", "message")
                 request_success = True
             else:

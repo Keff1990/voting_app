@@ -183,7 +183,6 @@ class RequestOTPForm(FlaskForm):
             )
             return False
 
-        return True
         self.member = Voter.query.filter_by(mobile=self.mobile.data).first()
         if not self.member:
             self.mobile.errors.append(
