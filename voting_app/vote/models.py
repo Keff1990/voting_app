@@ -19,9 +19,9 @@ class Voter(UserMixin, PkModel):
     otp = Column(db.String(10), nullable=False)
 
     voted = Column(db.Boolean(), default=False)
-
-    def __init__(self):
-        pass
+    #
+    # def __init__(self):
+    #     pass
 
     def set_otp(self, otp):
         """Set password."""

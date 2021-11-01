@@ -75,12 +75,12 @@ def vote():
         flash("Thank you for voting.", "success")
         return redirect(url_for("election.submit"))
 
-        # if (form.deacons.data) or (form.elders.data):
-        #     current_user.update(voted = True)
-        #     flash("Thank you for voting.", "success")
-        #     return redirect(url_for("election.submit"))
-        # else:
-        #     flash_errors(form)
+        if (form.deacons.data) or (form.elders.data):
+            current_user.update(voted=True)
+            flash("Thank you for voting.", "success")
+            return redirect(url_for("election.submit"))
+        else:
+            flash_errors(form)
     return render_template("elections/vote.html", form=form)
 
 

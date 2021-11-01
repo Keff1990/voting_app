@@ -140,12 +140,4 @@ class VotationForm(FlaskForm):
         if not initial_validation:
             return False
 
-        if len(self.deacons.data) > 8:
-            self.deacons.errors.append("You may only vote for up to 8 deacons.")
-            return False
-
-        if len(self.elders.data) > 7:
-            self.elders.errors.append("You may only vote for up to 7 elders.")
-            return False
-
         return True
