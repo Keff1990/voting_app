@@ -22,8 +22,8 @@ def create_test_user(
 
     engine = sqla.create_engine(db_url, echo=True)
 
-    metadata = sqla.MetaData(bind=engine)
-    metadata.reflect()
+    metadata = sqla.MetaData()
+    metadata.reflect(bind=engine)
 
     voters = metadata.tables["voters"]
 
@@ -36,8 +36,8 @@ def create_test_user(
         voted=voted,
     )
 
-    with engine.connect() as conn:
-        result = conn.execute(test_voter)
+    with engine.begin() as conn:
+        conn.execute(test_voter)
     print("Done.")
 
 
@@ -53,6 +53,12 @@ def load_users(file_path="./db_users.csv", db_url=None):
         db_url = env.str("DATABASE_URL")
     engine = sqla.create_engine(db_url, echo=True)
 
-    with engine.connect() as conn:
-        df_csv.to_sql("voters", conn, if_exists="replace", index=True, index_label="id")
+    with engine.begin() as conn:
+        df_csv.to_sql(
+            "voters",
+            conn,
+            if_exists="replace",
+            index=True,
+            index_label="id",
+        )
     print("Done.")

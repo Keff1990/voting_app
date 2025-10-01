@@ -1,8 +1,8 @@
-import pandas as pd
 from datetime import datetime
+
+import pandas as pd
 import sqlalchemy as sqla
-from sqlalchemy.sql import select
-from sqlalchemy import func
+from sqlalchemy import func, select
 
 def download_data(db_url):
 
@@ -10,25 +10,31 @@ def download_data(db_url):
     db_url = "sqlite:///" + db_url
     engine = sqla.create_engine(db_url, echo=True)
 
-    metadata = sqla.MetaData(bind=engine)
-    metadata.reflect()
+    metadata = sqla.MetaData()
+    metadata.reflect(bind=engine)
 
     Vote = metadata.tables['votes']
     Voter = metadata.tables['voters']
 
-    s = select([Vote.c.type, Vote.c.name, func.count(Vote.c.name)]).group_by(Vote.c.name)
+    stmt_votes = select(Vote.c.type, Vote.c.name, func.count(Vote.c.name)).group_by(
+        Vote.c.name
+    )
     with engine.connect() as conn:
-        result = conn.execute(s)
+        vote_rows = conn.execute(stmt_votes).all()
 
-        df=pd.DataFrame(result, columns=['type', 'name', 'votes'])
+    df = pd.DataFrame(vote_rows, columns=['type', 'name', 'votes'])
 
     df.to_csv(f"votes_{now}.csv")
 
-    s = select([Voter.c.first_name, Voter.c.last_name, Voter.c.otp, Voter.c.voted])
+    stmt_voters = select(
+        Voter.c.first_name, Voter.c.last_name, Voter.c.otp, Voter.c.voted
+    )
     with engine.connect() as conn:
-        result = conn.execute(s)
+        voter_rows = conn.execute(stmt_voters).all()
 
-        df=pd.DataFrame(result, columns=['first_name', 'last_name', 'passcode', 'voted'])
+    df = pd.DataFrame(
+        voter_rows, columns=['first_name', 'last_name', 'passcode', 'voted']
+    )
 
     df.voted.replace(False, "", inplace=True)
 

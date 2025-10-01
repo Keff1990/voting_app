@@ -2,8 +2,11 @@ import re
 from datetime import datetime
 
 from flask_wtf import FlaskForm
+from sqlalchemy import select
 from wtforms import SelectMultipleField, StringField, SubmitField, widgets
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms.validators import DataRequired
+
+from voting_app.extensions import db
 
 from .models import Voter
 
@@ -86,9 +89,11 @@ class VoterForm(FlaskForm):
         super(VoterForm, self).__init__(*args, **kwargs)
         self.voter = None
 
-    def validate(self):
+    def validate(self, extra_validators=None):
         """Validate the form."""
-        initial_validation = super(VoterForm, self).validate()
+        initial_validation = super(VoterForm, self).validate(
+            extra_validators=extra_validators
+        )
         if not initial_validation:
             return False
 
@@ -101,9 +106,8 @@ class VoterForm(FlaskForm):
         #     self.otp.errors.append("Voting has closed. Voting closed at January 31, 5:00 PM.")
         #     return False
 
-        print(Voter.query.filter_by(otp=self.otp.data).first())
-        self.voter = Voter.query.filter_by(otp=self.otp.data).first()
-        print(self.voter)
+        stmt = select(Voter).filter_by(otp=self.otp.data)
+        self.voter = db.session.execute(stmt).scalar_one_or_none()
         if not self.voter:
             self.otp.errors.append("Incorrect Passcode. Please try again.")
             return False
@@ -147,9 +151,11 @@ class RequestOTPForm(FlaskForm):
         super(RequestOTPForm, self).__init__(*args, **kwargs)
         self.member = None
 
-    def validate(self):
+    def validate(self, extra_validators=None):
         """Validate the form."""
-        initial_validation = super(RequestOTPForm, self).validate()
+        initial_validation = super(RequestOTPForm, self).validate(
+            extra_validators=extra_validators
+        )
         if not initial_validation:
             return False
 
@@ -183,7 +189,8 @@ class RequestOTPForm(FlaskForm):
             )
             return False
 
-        self.member = Voter.query.filter_by(mobile=self.mobile.data).first()
+        stmt = select(Voter).filter_by(mobile=self.mobile.data)
+        self.member = db.session.execute(stmt).scalar_one_or_none()
         if not self.member:
             self.mobile.errors.append(
                 f"Your mobile number is not found in our member's directory. Please fill up this form {otp_form_url} and email election@gcf.org.ph for assistance."
@@ -222,9 +229,11 @@ class VotationForm(FlaskForm):
     deacons = MultiCheckboxField("Deacons", choices=deacons_list)
     # submit = SubmitField("Submit")
 
-    def validate(self):
+    def validate(self, extra_validators=None):
         """Validate the form."""
-        initial_validation = super(VotationForm, self).validate()
+        initial_validation = super(VotationForm, self).validate(
+            extra_validators=extra_validators
+        )
         if not initial_validation:
             return False
 
