@@ -19,7 +19,6 @@ from voting_app.utils import flash_errors
 from voting_app.vote.forms import (
     VotationForm,
     VoterForm,
-    RequestOTPForm,
     deacons_images,
     elders_images,
 )
@@ -42,39 +41,20 @@ def load_user(voter_id):
 def login():
     """Login Page."""
     form_login = VoterForm(request.form)
-    form_request = RequestOTPForm(request.form)
-    request_success = False
     current_app.logger.info("Hello from the home page!")
     # Handle logging in
     if request.method == "POST":
         if form_login.submitlogin.data:
             if form_login.validate():
-                # print(form_login.voter)
                 login_user(form_login.voter)
                 flash("You are logged in.", "success")
                 redirect_url = request.args.get("next") or url_for("election.vote")
                 return redirect(redirect_url)
-            else:
-                flash_errors(form_login)
-
-        if form_request.submitrequest.data:
-            if form_request.validate():
-                # INPUT API REQUEST FOR SMS MESSAGE HERE
-                # use the ff:
-                # form_request.member.mobile --> recipient's mobile number
-                # form_request.member.otp --> recipient's passcode/otp
-                # you can use the following message:
-                # f"GCF Voting Passcode: {form_request.member.otp}. Use this to login at election.gcf.org.ph. Do not share this with anyone."
-                flash("Your Passcode has been sent to your mobile device.", "message")
-                request_success = True
-            else:
-                flash_errors(form_request)
+            flash_errors(form_login)
 
     return render_template(
         "elections/login.html",
         form_login=form_login,
-        form_request=form_request,
-        request_success=request_success,
     )
 
 

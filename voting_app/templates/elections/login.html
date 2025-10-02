@@ -6,9 +6,9 @@
   <div class="hero-body">
     <div class="container">
       <div class="columns is-centered">
-        <div class="box column is-5">
+        <div class="box column is-5-tablet is-4-desktop is-4-widescreen">
             <h1 class="title has-text-black"> Have your Passcode? </h1>
-            <h2 class="subtitle has-text-black"> Fill up the information below to log-in! </h2>
+            <h2 class="subtitle has-text-black"> Fill up the information below to log in. </h2>
           <form action="" class="" method="POST">
             {{ form_login.hidden_tag() }}
             <div class="field">
@@ -41,7 +41,7 @@
               {% for error in form_login.otp.errors %}
                 <div class="help is-danger">{{ error }}</div>
                 {% endfor %}
-              <div class="is-size-7">Check your email inbox to see if you received a passcode from us! If not, request for a passcode to the right.</div>
+              <div class="is-size-7">Check your email inbox for your passcode. If you did not receive one, please contact election@gcf.org.ph for assistance.</div>
             </div>
 
             <div class="field">
@@ -49,58 +49,6 @@
               <!-- <input class="button is-success" type="submit" value="Login"> -->
             </div>
           </form>
-        </div>
-
-        <div class="column is-1">
-        </div>
-
-        <div class="box column is-5 has-background-info">
-                <h1 class="title"> No Passcode? </h1>
-                <h2 class="subtitle"> No worries! You can request for a passcode here: </h2>
-
-                <form action="" class="" method="POST">
-                  {{ form_request.hidden_tag() }}
-                  <div class="field">
-                    {{form_request.first_name.label(class="label")}}
-                    <div class="control">
-                      {{form_request.first_name(class="input", placeholder="")}}
-                    </div>
-                    {% for error in form_request.first_name.errors %}
-                      <div class="help is-danger">{{ error }}</div>
-                      {% endfor %}
-
-                  </div>
-                  <div class="field">
-                    {{form_request.last_name.label(class="label")}}
-                    <div class="control">
-                      {{form_request.last_name(class="input", placeholder="")}}
-                    </div>
-                    {% for error in form_request.last_name.errors %}
-                      <div class="help is-danger">{{ error }}</div>
-                      {% endfor %}
-                  </div>
-                  <div class="field">
-                    {{form_request.mobile.label(class="label")}}
-                    <div class="control has-icons-left">
-                      {{form_request.mobile(class="input", placeholder="09#########")}}
-                      <span class="icon is-small is-left">
-                        <i class="fa fa-lock"></i>
-                      </span>
-                    </div>
-                    {% for error in form_request.mobile.errors %}
-                      <div class="help is-danger">{{ error }}</div>
-                      {% endfor %}
-                    <div class="is-size-7">Having a hard time requesting for a passcode? Email election@gcf.org.ph to verify your membership and receive one!</div>
-                  </div>
-
-                  <div class="field">
-                      {{ form_request.submitrequest(class_="button") }}
-                      {% if request_success %}
-                        <div class="help has-text-success-light">Your request has been received. Your passcode will be sent via SMS shortly.</div>
-                      {% endif %}
-                    <!-- <input class="button" type="submit" value="Request Passcode"> -->
-                  </div>
-                </form>
         </div>
       </div>
     </div>

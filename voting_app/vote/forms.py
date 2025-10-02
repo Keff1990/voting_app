@@ -1,5 +1,4 @@
 import csv
-import re
 from datetime import datetime
 from pathlib import Path
 
@@ -53,9 +52,6 @@ def _load_nominees(csv_name):
 
 deacons_list, deacons_images = _load_nominees("deacon_nominees.csv")
 elders_list, elders_images = _load_nominees("elder_nominees.csv")
-
-otp_form_url = "_______"  # INPUT PROPER URL HERE
-
 
 def validate_name(val1, val2):
     """validates if the name might be valid"""
@@ -162,90 +158,6 @@ class VoterForm(FlaskForm):
             )
             return False
 
-        return True
-
-
-class RequestOTPForm(FlaskForm):
-    """Request OTP form."""
-
-    first_name = StringField("First Name", validators=[DataRequired()])
-    last_name = StringField("Last Name", validators=[DataRequired()])
-    mobile = StringField("Mobile Number", validators=[DataRequired()])
-    submitrequest = SubmitField("Request Passcode")
-
-    def __init__(self, *args, **kwargs):
-        """Create instance."""
-        super(RequestOTPForm, self).__init__(*args, **kwargs)
-        self.member = None
-
-    def validate(self, extra_validators=None):
-        """Validate the form."""
-        initial_validation = super(RequestOTPForm, self).validate(
-            extra_validators=extra_validators
-        )
-        if not initial_validation:
-            return False
-
-        now = datetime.now()
-        # if now < datetime(2021, 11, 7):
-        #     self.otp.errors.append("Voting is still closed. Voting will open on January 17, and close at January 31, 5:00 PM.")
-        #     return False
-        #
-        # if now > datetime(2021, 11, 29):
-        #     self.otp.errors.append("Voting has closed. Voting closed at January 31, 5:00 PM.")
-        #     return False
-
-        def clean_mobile(mobile):
-            mobile = str(re.sub("[^0-9]", "", str(mobile)))
-            if (len(mobile) == 10) & (mobile[0] == "9"):
-                mobile = "0" + mobile
-
-            if (len(mobile) == 12) & (mobile[:2] == "63"):
-                mobile = "0" + mobile[2:]
-
-            if (len(mobile) == 13) & (mobile[:3] == "+63"):
-                mobile = "0" + mobile[3:]
-
-            return mobile
-
-        mobile = str(clean_mobile(self.mobile.data))
-
-        if (len(mobile) != 11) or (mobile[0] != "0"):
-            self.mobile.errors.append(
-                "Please verify that your mobile number is in an acceptable format. For foreign numbers, please email election@gcf.org.ph for assistance."
-            )
-            return False
-
-        stmt = select(Voter).filter_by(mobile=self.mobile.data)
-        self.member = db.session.execute(stmt).scalar_one_or_none()
-        if not self.member:
-            self.mobile.errors.append(
-                f"Your mobile number is not found in our member's directory. Please fill up this form {otp_form_url} and email election@gcf.org.ph for assistance."
-            )
-            return False
-
-        if not validate_name(
-            self.member.first_name.replace("ñ", "n"),
-            self.first_name.data.replace("ñ", "n"),
-        ):
-            self.first_name.errors.append(
-                "This name is not assigned to your mobile number our member's directory. Please contact fill up this form {otp_form_url} and email election@gcf.org.ph for assistance."
-            )
-            return False
-
-        if self.member.last_name.lower().replace(
-            "ñ", "n"
-        ) != self.last_name.data.lower().replace("ñ", "n"):
-            self.last_name.errors.append(
-                "This name is not assigned to your mobile number our member's directory. Please contact fill up this form {otp_form_url} and email election@gcf.org.ph for assistance."
-            )
-            return False
-
-        if self.member.voted:
-            self.otp.errors.append(
-                "Member has already voted. For questions, please contact electon@gcf.org.ph."
-            )
-            return False
         return True
 
 
