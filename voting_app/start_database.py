@@ -41,11 +41,24 @@ def create_test_user(
     print("Done.")
 
 
-def load_users(file_path="./db_users.csv", db_url=None):
+def load_users(file_path="yearly_upload_files/db_users.csv", db_url=None):
     print("Started...")
 
     df_csv = pd.read_csv(file_path)
+
+    required_columns = ["last_name", "first_name", "otp"]
+    missing_required = [col for col in required_columns if col not in df_csv.columns]
+    if missing_required:
+        raise ValueError(f"Missing required column(s) in CSV: {', '.join(missing_required)}")
+
+    for optional in ["email", "mobile"]:
+        if optional not in df_csv.columns:
+            df_csv[optional] = ""
+
+    ordered_cols = ["last_name", "first_name", "email", "mobile", "otp"]
+    df_csv = df_csv[[col for col in ordered_cols if col in df_csv.columns]]
     df_csv["voted"] = False
+    df_csv = df_csv[ordered_cols + ["voted"]]
 
     if not db_url:
         env = Env()

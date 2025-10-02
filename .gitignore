@@ -47,6 +47,11 @@ docs/_build
 # Virtualenvs
 env/
 
+# Upload artifacts (keep placeholder)
+yearly_upload_files/*
+!yearly_upload_files/.gitkeep
+!yearly_upload_files/README.md
+
 # npm
 /node_modules/
 
