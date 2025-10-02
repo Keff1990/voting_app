@@ -29,7 +29,7 @@
                 {% for choice in form.elders %}
                     <div class="control media">
                       <div class="media-left image is-48x48">
-                          <img src="/static/img/{{ elders_images[loop.index0] }}">
+                          <img src="{{ url_for('election.nominee_image', filename=elders_images[loop.index0]) }}">
                       </div>
                       <div class="media-content">
                           {{ choice }}
@@ -51,7 +51,7 @@
               {% for choice in form.deacons %}
                 <div class="control media">
                     <div class="media-left image is-48x48">
-                        <img src="/static/img/{{ deacons_images[loop.index0] }}">
+                        <img src="{{ url_for('election.nominee_image', filename=deacons_images[loop.index0]) }}">
                     </div>
                     <div class="media-content">
                         {{ choice }}

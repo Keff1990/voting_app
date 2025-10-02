@@ -15,9 +15,14 @@ A simple voting app made for GCF.
 `flask db upgrade`  
 
 ## Adding Users:
-1. Place the provided CSV inside `./yearly_upload_files` and ensure it is named `db_users.csv`.
+1. Place the provided CSV inside `./yearly_upload_files` and ensure it is named `db_users.csv` (this file is git-ignored so each deployment supplies its own data).
 1. From the project root, run:  
 `python -c 'from voting_app.start_database import load_users; load_users()'`
+
+## Updating Nominee Lists:
+1. Edit `yearly_upload_files/deacon_nominees.csv` and `yearly_upload_files/elder_nominees.csv` using the `id,full_name` columns (both files are git-ignored, so keep copies per deployment).
+1. Add or replace nominee headshots in `yearly_upload_files/` with filenames that match the nominee `id` (`[id].png`).
+1. Changes take effect the next time the application starts.
 
 ## Deployment:
 1. Review the .env file provided.

@@ -1,5 +1,7 @@
+import csv
 import re
 from datetime import datetime
+from pathlib import Path
 
 from flask_wtf import FlaskForm
 from sqlalchemy import select
@@ -10,22 +12,47 @@ from voting_app.extensions import db
 
 from .models import Voter
 
-deacons_list = [
-    ("philip", "Philip Blanco"),
-    ("theo", "Theo Espinosa"),
-    ("jourd", "Jourd Lee"),
-    ("caleb", "Caleb Ramirez"),
-    ("lark", "Lark Silva"),
-    ("regie", "Regie Salas"),
-]
-elders_list = [
-    ("sherwin", "Sherwin Chua"),
-    ("ave", "Ave Gaspar"),
-    ("rommel", "Rommel Yazon"),
-]
+UPLOAD_DIR = Path(__file__).resolve().parents[2] / "yearly_upload_files"
 
-deacons_images = [f"{x[0]}.png" for x in deacons_list]
-elders_images = [f"{x[0]}.png" for x in elders_list]
+
+def _load_nominees(csv_name):
+    """Load nominee choices from CSV returning (choices, image_filenames)."""
+
+    csv_path = UPLOAD_DIR / csv_name
+    if not csv_path.exists():
+        raise RuntimeError(
+            f"Missing nominee CSV '{csv_name}'. Upload the file to {UPLOAD_DIR.as_posix()} before starting the app."
+        )
+
+    with csv_path.open(newline="", encoding="utf-8") as csv_file:
+        reader = csv.DictReader(csv_file)
+        required_columns = {"id", "full_name"}
+        missing = required_columns.difference(reader.fieldnames or [])
+        if missing:
+            raise ValueError(
+                f"Nominee CSV '{csv_name}' is missing required column(s): {', '.join(sorted(missing))}."
+            )
+
+        choices = []
+        image_names = []
+        for row in reader:
+            nominee_id = (row.get("id") or "").strip()
+            full_name = (row.get("full_name") or "").strip()
+            if not nominee_id or not full_name:
+                continue
+            choices.append((nominee_id, full_name))
+            image_names.append(f"{nominee_id}.png")
+
+    if not choices:
+        raise ValueError(
+            f"Nominee CSV '{csv_name}' does not contain any rows. Please populate it before running the app."
+        )
+
+    return choices, image_names
+
+
+deacons_list, deacons_images = _load_nominees("deacon_nominees.csv")
+elders_list, elders_images = _load_nominees("elder_nominees.csv")
 
 otp_form_url = "_______"  # INPUT PROPER URL HERE
 

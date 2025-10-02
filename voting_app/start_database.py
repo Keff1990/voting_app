@@ -56,9 +56,8 @@ def load_users(file_path="yearly_upload_files/db_users.csv", db_url=None):
             df_csv[optional] = ""
 
     ordered_cols = ["last_name", "first_name", "email", "mobile", "otp"]
-    df_csv = df_csv[[col for col in ordered_cols if col in df_csv.columns]]
+    df_csv = df_csv[ordered_cols]
     df_csv["voted"] = False
-    df_csv = df_csv[ordered_cols + ["voted"]]
 
     if not db_url:
         env = Env()

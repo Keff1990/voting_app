@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 
 from flask import (
     Blueprint,
@@ -7,8 +8,10 @@ from flask import (
     redirect,
     render_template,
     request,
+    send_from_directory,
     url_for,
 )
+from flask import abort
 
 from flask_login import current_user, login_required, login_user, logout_user
 from voting_app.extensions import login_manager
@@ -25,6 +28,8 @@ from voting_app.vote.models import Vote, Voter
 blueprint = Blueprint(
     "election", __name__, url_prefix="/elections", static_folder="../static"
 )
+
+UPLOAD_DIR = Path(__file__).resolve().parents[2] / "yearly_upload_files"
 
 
 @login_manager.user_loader
@@ -128,3 +133,13 @@ def submit():
 @blueprint.route("/submitted/")
 def submitted():
     return render_template("elections/submitted.html")
+
+
+@blueprint.route("/nominee-images/<path:filename>")
+def nominee_image(filename):
+    """Serve nominee image files stored in the yearly upload directory."""
+
+    try:
+        return send_from_directory(UPLOAD_DIR, filename)
+    except FileNotFoundError:
+        abort(404)
