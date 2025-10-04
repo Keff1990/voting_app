@@ -26,11 +26,17 @@
                   <div class="help is-danger">{{ error }}</div>
                 {% endfor %}
 
-                {% for choice in form.elders %}
+                {% for choice, image_name in elder_options %}
                     <div class="control media">
+                      {% if image_name %}
                       <div class="media-left image is-48x48">
-                          <img src="{{ url_for('election.nominee_image', filename=elders_images[loop.index0]) }}">
+                          <img src="{{ url_for('election.nominee_image', filename=image_name) }}" alt="{{ choice.label.text }}">
                       </div>
+                      {% elif choice.data != 'abstain' %}
+                      <div class="media-left">
+                          <span class="tag is-light is-medium">No photo</span>
+                      </div>
+                      {% endif %}
                       <div class="media-content">
                           {{ choice }}
                           {{ choice.label }}
@@ -48,11 +54,17 @@
                 <div class="help is-danger">{{ error }}</div>
               {% endfor %}
 
-              {% for choice in form.deacons %}
+              {% for choice, image_name in deacon_options %}
                 <div class="control media">
+                    {% if image_name %}
                     <div class="media-left image is-48x48">
-                        <img src="{{ url_for('election.nominee_image', filename=deacons_images[loop.index0]) }}">
+                        <img src="{{ url_for('election.nominee_image', filename=image_name) }}" alt="{{ choice.label.text }}">
                     </div>
+                    {% elif choice.data != 'abstain' %}
+                    <div class="media-left">
+                        <span class="tag is-light is-medium">No photo</span>
+                    </div>
+                    {% endif %}
                     <div class="media-content">
                         {{ choice }}
                         {{ choice.label }}

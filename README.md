@@ -22,6 +22,7 @@ A simple voting app made for GCF.
 ## Updating Nominee Lists:
 1. Edit `yearly_upload_files/deacon_nominees.csv` and `yearly_upload_files/elder_nominees.csv` using the `id,full_name` columns (both files are git-ignored, so keep copies per deployment).
 1. Add or replace nominee headshots in `yearly_upload_files/` with filenames that match the nominee `id` (`[id].png`).
+1. The application automatically adds an "Abstain" option for each ballot—no CSV entry is needed for it.
 1. Changes take effect the next time the application starts.
 
 ## Deployment:

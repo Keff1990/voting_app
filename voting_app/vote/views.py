@@ -43,14 +43,13 @@ def login():
     form_login = VoterForm(request.form)
     current_app.logger.info("Hello from the home page!")
     # Handle logging in
-    if request.method == "POST":
-        if form_login.submitlogin.data:
-            if form_login.validate():
-                login_user(form_login.voter)
-                flash("You are logged in.", "success")
-                redirect_url = request.args.get("next") or url_for("election.vote")
-                return redirect(redirect_url)
-            flash_errors(form_login)
+    if request.method == "POST" and form_login.submitlogin.data:
+        if form_login.validate():
+            login_user(form_login.voter)
+            flash("You are logged in.", "success")
+            redirect_url = request.args.get("next") or url_for("election.vote")
+            return redirect(redirect_url)
+        flash_errors(form_login)
 
     return render_template(
         "elections/login.html",
@@ -87,17 +86,21 @@ def vote():
                     date=now,
                 )
 
-        if (form.deacons.data) or (form.elders.data):
-            current_user.update(voted=True)
-            flash("Thank you for voting.", "success")
-            return redirect(url_for("election.submit"))
-        else:
-            flash_errors(form)
+        current_user.update(voted=True)
+        flash("Thank you for voting.", "success")
+        return redirect(url_for("election.submit"))
+
+    elif request.method == "POST":
+        flash_errors(form)
+
+    deacon_options = list(zip(list(form.deacons), deacons_images))
+    elder_options = list(zip(list(form.elders), elders_images))
+
     return render_template(
         "elections/vote.html",
         form=form,
-        deacons_images=deacons_images,
-        elders_images=elders_images,
+        deacon_options=deacon_options,
+        elder_options=elder_options,
     )
 
 

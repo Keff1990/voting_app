@@ -33,6 +33,7 @@ The importer will backfill blank `email` and `mobile` columns when it loads the 
   2. `full_name` – Name displayed to voters
 - Keep the header row and provide one row per nominee.
 - The application reads these files on startup to populate the ballot choices.
+- An "Abstain" option is automatically appended by the application; no CSV row is required for it.
 
 ### Sample Rows
 
