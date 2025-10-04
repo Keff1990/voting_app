@@ -35,3 +35,29 @@ def get_otp(fname, lname):
         else:
             voted = "Available"
         print(f"{voted}. {r[0]} {r[1]}. OTP: {r[2]}")
+
+
+def get_turnout_summary():
+    """Print total voters, number who have voted, and percentage turnout."""
+
+    Voter = vote.models.Voter
+
+    total_stmt = select(func.count(Voter.id))
+    voted_stmt = select(func.count(Voter.id)).where(Voter.voted.is_(True))
+
+    total_voters = db.session.execute(total_stmt).scalar() or 0
+    voted_voters = db.session.execute(voted_stmt).scalar() or 0
+
+    percentage = 0
+    if total_voters:
+        percentage = round((voted_voters / total_voters) * 100, 2)
+
+    print(
+        f"Received {voted_voters} out of {total_voters} votes from the database. ({percentage}%)"
+    )
+
+    return {
+        "total": total_voters,
+        "voted": voted_voters,
+        "percentage": percentage,
+    }
