@@ -29,8 +29,10 @@
                 {% for choice, image_name in elder_options %}
                     <div class="control media">
                       {% if image_name %}
-                      <div class="media-left image is-48x48">
-                          <img src="{{ url_for('election.nominee_image', filename=image_name) }}" alt="{{ choice.label.text }}">
+                      <div class="media-left">
+                          <figure class="image is-48x48">
+                              <img class="is-rounded" style="width: 48px; height: 48px; object-fit: cover;" src="{{ url_for('election.nominee_image', filename=image_name) }}" alt="{{ choice.label.text }}">
+                          </figure>
                       </div>
                       {% elif choice.data != 'abstain' %}
                       <div class="media-left">
@@ -57,8 +59,10 @@
               {% for choice, image_name in deacon_options %}
                 <div class="control media">
                     {% if image_name %}
-                    <div class="media-left image is-48x48">
-                        <img src="{{ url_for('election.nominee_image', filename=image_name) }}" alt="{{ choice.label.text }}">
+                    <div class="media-left">
+                        <figure class="image is-48x48">
+                            <img class="is-rounded" style="width: 48px; height: 48px; object-fit: cover;" src="{{ url_for('election.nominee_image', filename=image_name) }}" alt="{{ choice.label.text }}">
+                        </figure>
                     </div>
                     {% elif choice.data != 'abstain' %}
                     <div class="media-left">
