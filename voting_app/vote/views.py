@@ -67,24 +67,37 @@ def vote():
 
     print(current_user.id)
     if form.validate_on_submit():
+        recorded_vote = False
+
         if form.deacons.data:
             for deacon in form.deacons.data:
                 print(current_user.id, deacon, now)
                 Vote.create(
                     voter_id=current_user.id,
                     type="deacon",
-                    name=deacon,  # check how to access id of deacon
+                    name=deacon,
                     date=now,
                 )
+                recorded_vote = True
+
         if form.elders.data:
             for elder in form.elders.data:
                 print(current_user.id, elder, now)
                 Vote.create(
                     voter_id=current_user.id,
                     type="elder",
-                    name=elder,  # check how to access id of elder
+                    name=elder,
                     date=now,
                 )
+                recorded_vote = True
+
+        if not recorded_vote:
+            Vote.create(
+                voter_id=current_user.id,
+                type="abstain",
+                name="abstain",
+                date=now,
+            )
 
         current_user.update(voted=True)
         flash("Thank you for voting.", "success")

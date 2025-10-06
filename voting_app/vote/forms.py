@@ -51,9 +51,6 @@ def _load_nominees(csv_name):
             f"Nominee CSV '{csv_name}' does not contain any rows. Please populate it before running the app."
         )
 
-    choices.append(("abstain", "Abstain"))
-    image_names.append(None)
-
     return choices, image_names
 
 
@@ -173,40 +170,3 @@ class VotationForm(FlaskForm):
 
     elders = MultiCheckboxField("Elders", choices=elders_list)
     deacons = MultiCheckboxField("Deacons", choices=deacons_list)
-    # submit = SubmitField("Submit")
-
-    def validate(self, extra_validators=None):
-        """Validate the form."""
-        initial_validation = super(VotationForm, self).validate(
-            extra_validators=extra_validators
-        )
-        if not initial_validation:
-            return False
-
-        deacon_selection = self.deacons.data or []
-        elder_selection = self.elders.data or []
-
-        if not deacon_selection:
-            self.deacons.errors.append(
-                "Please select at least one deacon nominee or choose Abstain."
-            )
-        if not elder_selection:
-            self.elders.errors.append(
-                "Please select at least one elder nominee or choose Abstain."
-            )
-        if not deacon_selection or not elder_selection:
-            return False
-
-        if "abstain" in deacon_selection and len(deacon_selection) > 1:
-            self.deacons.errors.append(
-                "Select Abstain alone or choose specific deacon nominees."
-            )
-            return False
-
-        if "abstain" in elder_selection and len(elder_selection) > 1:
-            self.elders.errors.append(
-                "Select Abstain alone or choose specific elder nominees."
-            )
-            return False
-
-        return True
