@@ -7,8 +7,11 @@
     <div class="container">
       <div class="columns is-centered">
         <div class="box column is-5-tablet is-4-desktop is-4-widescreen">
-            <h1 class="title has-text-black"> Have your Passcode? </h1>
-            <h2 class="subtitle has-text-black"> Fill up the information below to log in. </h2>
+            <h1 class="title has-text-black"> GCF Church Leaders Election 2025 </h1>
+            <div class="content has-text-black is-size-6">
+              <p>Log in with your complete name and one-time password (OTP). Check your email to see your OTP.</p>
+              <p>GCF Ortigas values the privacy of your personal information. All data to be gathered will be treated with confidentiality and will be used for the Election Process. By logging in, you agree for us to process your information in accordance with <a href="https://gcf.link/PrivacyPolicy" target="_blank" rel="noopener noreferrer">GCF's Privacy Policy</a>.</p>
+            </div>
           <form action="" class="" method="POST">
             {{ form_login.hidden_tag() }}
             <div class="field">
@@ -41,7 +44,7 @@
               {% for error in form_login.otp.errors %}
                 <div class="help is-danger">{{ error }}</div>
                 {% endfor %}
-              <div class="is-size-7">Check your email inbox for your passcode. If you did not receive one, please contact election@gcf.org.ph for assistance.</div>
+              <div class="is-size-7">Check your email inbox for your passcode. If you did not receive one, send an email with your Full Name, Mobile Number, and Email Address to election@gcf.org.ph.</div>
             </div>
 
             <div class="field">

@@ -10,13 +10,13 @@
             <div class="container has-text-black pt-2 pb-4">
                 <h1 class="title has-text-black">Voting Instructions</h1>
 
-                <h2 class="subtitle has-text-grey is-size-6">You may vote for as many candidates as you want by clicking on their name below.
-                    Once you select a nominee, you should see a checkmark in the box beside their name. Finalize your vote before clicking Submit.
-                    Once you submit your vote, you may <b>no longer change</b> your vote.
-                </h2>
+                <div class="subtitle has-text-grey is-size-6 content">
+                  <p>Please check the box beside the name of the candidate if you are in favor of electing him for the indicated position. You may choose and check as many as two (2) for the position of elder and five (5) for the position of deacon.</p>
+                  <p>Finalize your vote before clicking Submit. Once you submit your vote, you may <b>no longer change</b> your vote.</p>
+                </div>
             </div>
 
-          <form action="" method="POST" onSubmit="return confirm('Confirmation: Submit your vote? You can not change your vote after submission. An empty vote counts as an abstain.');">
+          <form action="" method="POST" id="vote-form">
               {{ form.hidden_tag() }}
 
             <div class="field pl-4">
@@ -90,4 +90,22 @@
   </div>
 </section>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('vote-form');
+  if (!form) {
+    return;
+  }
+
+  form.addEventListener('submit', function (event) {
+    const hasSelection = form.querySelectorAll('input[type="checkbox"]:checked').length > 0;
+    if (!hasSelection) {
+      const proceed = window.confirm('An empty vote counts as an abstain. You can not change your vote after submission. Submit your vote?');
+      if (!proceed) {
+        event.preventDefault();
+      }
+    }
+  });
+});
+</script>
 {% endblock %}
