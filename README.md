@@ -7,10 +7,13 @@ Use this guide when the Python environment and dependencies are already in place
 Run the following from the project root to ensure you have the newest templates, forms, and helpers:
 
 ```bash
+pkill -f "flask run" 2>/dev/null || true  # stop any previous dev server
 git fetch origin
 git checkout 2025_main
 git pull origin 2025_main
 ```
+
+> Skip the `pkill` line if you know nothing is running. On Windows, stop the Flask process through Task Manager or the shell where it is running.
 
 ## 2. Replace the Entire Voter List
 
@@ -106,3 +109,22 @@ Need another maintenance shortcut? Reach out and we can extend this guide.
 2. Add or replace nominee headshots in `yearly_upload_files/` with filenames that match the nominee `id` (`[id].png`).
 3. Voters who submit without selecting any nominees are recorded as abstain automatically—no CSV entry is needed.
 4. Changes take effect the next time the application starts.
+
+## Appendix: Run or Stop the App
+
+### Activate the virtual environment (once per shell)
+
+```bash
+source env/bin/activate
+```
+
+### Start the Flask dev server
+
+```bash
+FLASK_APP=autoapp.py flask run --host=0.0.0.0 --port=5000
+```
+
+### Stop the running server
+
+- Press `Ctrl+C` in the terminal where it is running, **or**
+- From another terminal: `pkill -f "flask run"` (macOS/Linux) / stop the process in Task Manager (Windows).
