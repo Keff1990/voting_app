@@ -1,0 +1,41 @@
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  background-color: #f5f5f5;
+  color: #222;
+}
+
+.hero.is-primary {
+  background-color: #004b8d;
+  color: #fff;
+}
+
+.box,
+.card,
+.modal-card,
+.dropdown-content {
+  background-color: #fff;
+  color: #222;
+}
+
+.control .input,
+.control .textarea,
+.checkbox,
+.radio {
+  background-color: #fff;
+  color: #222;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #666;
+}
+
+.button,
+.checkbox,
+.radio {
+  color: inherit;
+}
