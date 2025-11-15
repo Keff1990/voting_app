@@ -41,7 +41,7 @@ def create_test_user(
     print("Done.")
 
 
-def load_users(file_path="yearly_upload_files/db_users.csv", db_url=None):
+def load_users(file_path="yearly_upload_files/db_users.csv", db_url=None, reset_votes=True):
     print("Started...")
 
     df_csv = pd.read_csv(file_path)
@@ -73,4 +73,8 @@ def load_users(file_path="yearly_upload_files/db_users.csv", db_url=None):
             index=True,
             index_label="id",
         )
+
+    if reset_votes:
+        with engine.begin() as conn:
+            conn.execute(sqla.text("DELETE FROM votes"))
     print("Done.")
