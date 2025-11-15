@@ -6,15 +6,16 @@ Use these recipes when the Python environment is already installed on the Alpine
 
 ## Use Case 1 – Update the app via `git pull` and restart `rc-service`
 
-1. `source env/bin/activate`
-2. If DNS errors appear, such as failed to connect to github, run `echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf`.
-3. Pull the latest branch:
+1. `cd project/root/folder`
+2. `source env/bin/activate`
+3. If DNS errors appear, such as failed to connect to github, run `echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf`.
+4. Pull the latest branch:
    ```bash
    git fetch origin
-   git checkout 2025_main
-   git pull origin 2025_main
+   git checkout 2025-main
+   git pull origin 2025-main
    ```
-4. Restart the system service so the code reloads:
+5. Restart the system service so the code reloads:
    ```bash
    sudo rc-service voteapp restart
    ```
