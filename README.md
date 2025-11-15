@@ -3,6 +3,14 @@
 Use these recipes when the Python environment is already installed on the Alpine Linux host and you just need to update data or monitor the 2025 election run.
 
 > **DNS reminder:** Some Alpine images lose name resolution between shells. If `git fetch` or other network commands cannot reach GitHub, run `echo "nameserver 8.8.8.8" | sudo tee -a /etc/resolv.conf` in the shell you are using, then retry. Repeat whenever you start a new session that needs outbound access.
+>
+> **Environment reminder:** Helper scripts need `DATABASE_URL` and related values exported. After `source env/bin/activate`, run:
+> ```bash
+> set -a
+> . ./.env
+> set +a
+> ```
+> Do this in any shell where `python -c "..."` commands report missing application context or blank `DATABASE_URL` values.
 
 ## Use Case 1 – Update the app via `git pull` and restart `rc-service`
 
@@ -91,4 +99,3 @@ Use these recipes when the Python environment is already installed on the Alpine
 3. Drop/update headshots in `yearly_upload_files/` using `[id].png` filenames.
 4. No CSV entry is needed for abstain—blank submissions are counted automatically.
 5. `sudo rc-service voteapp restart` so the refreshed nominees load.
-
