@@ -99,11 +99,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   form.addEventListener('submit', function (event) {
     const hasSelection = form.querySelectorAll('input[type="checkbox"]:checked').length > 0;
-    if (!hasSelection) {
-      const proceed = window.confirm('An empty vote counts as an abstain. You can not change your vote after submission. Submit your vote?');
-      if (!proceed) {
-        event.preventDefault();
-      }
+    const message = hasSelection
+      ? 'You can not change your vote after submission. Submit your vote?'
+      : 'An empty vote counts as an abstain. You can not change your vote after submission. Submit your vote?';
+    const proceed = window.confirm(message);
+    if (!proceed) {
+      event.preventDefault();
     }
   });
 });

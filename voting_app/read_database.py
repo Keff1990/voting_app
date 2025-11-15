@@ -1,11 +1,24 @@
 import pandas as pd
 from sqlalchemy import func, select
 
+from flask import current_app
+
 from voting_app import vote
 from voting_app.extensions import db
 
 
+def _ensure_app_context():
+    try:
+        current_app.name
+    except RuntimeError:
+        from voting_app.app import create_app
+
+        app = create_app()
+        app.app_context().push()
+
+
 def get_data():
+    _ensure_app_context()
     Voter = vote.models.Voter
     Vote = vote.models.Vote
 
@@ -21,6 +34,7 @@ def get_data():
 
 
 def get_otp(fname, lname):
+    _ensure_app_context()
     Voter = vote.models.Voter
 
     stmt = (
@@ -39,6 +53,8 @@ def get_otp(fname, lname):
 
 def get_turnout_summary():
     """Print total voters, number who have voted, and percentage turnout."""
+
+    _ensure_app_context()
 
     Voter = vote.models.Voter
 

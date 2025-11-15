@@ -46,7 +46,7 @@ Use these recipes when the Python environment is already installed on the Alpine
 1. `source env/bin/activate`
 2. One-liner reset:
    ```bash
-   python -c "from voting_app.extensions import db; from voting_app.vote.models import Vote, Voter; Vote.query.delete(); Voter.query.update({Voter.voted: False}); db.session.commit()"
+   python -c "from voting_app.app import create_app; from voting_app.extensions import db; from voting_app.vote.models import Vote, Voter; app = create_app(); app.app_context().push(); Vote.query.delete(); Voter.query.update({Voter.voted: False}); db.session.commit()"
    ```
 3. `sudo rc-service voteapp restart` so fresh sessions can begin voting.
 
@@ -90,5 +90,4 @@ Use these recipes when the Python environment is already installed on the Alpine
 3. Drop/update headshots in `yearly_upload_files/` using `[id].png` filenames.
 4. No CSV entry is needed for abstain—blank submissions are counted automatically.
 5. `sudo rc-service voteapp restart` so the refreshed nominees load.
-
 
