@@ -108,7 +108,7 @@ class VoterForm(FlaskForm):
 
     first_name = StringField("First Name", validators=[DataRequired()])
     last_name = StringField("Last Name", validators=[DataRequired()])
-    otp = StringField("Passcode", validators=[DataRequired()])
+    otp = StringField("One-time Password", validators=[DataRequired()])
     submitlogin = SubmitField("Login")
 
     def __init__(self, *args, **kwargs):
@@ -136,7 +136,7 @@ class VoterForm(FlaskForm):
         stmt = select(Voter).filter_by(otp=self.otp.data)
         self.voter = db.session.execute(stmt).scalar_one_or_none()
         if not self.voter:
-            self.otp.errors.append("Incorrect Passcode. Please try again.")
+            self.otp.errors.append("Incorrect OTP. Please try again.")
             return False
 
         if not validate_name(
@@ -144,7 +144,7 @@ class VoterForm(FlaskForm):
             self.first_name.data.replace("ñ", "n"),
         ):
             self.first_name.errors.append(
-                "Name does not match your Passcode. Please use the name in your GCF membership. Please try again."
+                "Name does not match your OTP. Please use the name in your GCF membership. Please try again."
             )
             return False
 
@@ -152,7 +152,7 @@ class VoterForm(FlaskForm):
             "ñ", "n"
         ) != self.last_name.data.lower().replace("ñ", "n"):
             self.last_name.errors.append(
-                "Name does not match your Passcode. Please use the name in your GCF membership. Please try again."
+                "Name does not match your OTP. Please use the name in your GCF membership. Please try again."
             )
             return False
 
